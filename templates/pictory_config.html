@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Pictory Automation Test Configuration</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
+
+</head>
+<body>
+    <h1>Pictory Automation Test Configuration</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form action="run_tests" method="post">
+        <div class="form-group">
+            <label for="env">Environment:</label>
+            <select name="env" id="env">
+                <option value="dev">Development</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="browser">Browser:</label>
+            <select name="browser" id="browser">
+                <option value="chrome">Chrome</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="marker">Marker:</label>
+            <select name="marker" id="marker" required>
+                <option value="Regression">Regression</option>
+                <option value="sanity">sanity</option>
+                <option value="Regression or sanity">all</option>
+
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="test_file">Select Test File:</label>
+            <select name="test_file" id="test_file">
+                <option value="test_Sign_Up.py">SignUp Page</option>
+                <option value="test_log_in.py">logIn Page</option>
+                <option value="test_Home_Page.py">Home Page</option>
+                <option value="test_account.py">account Page</option>
+                <option value="test_ScriptTo_Video.py">ScriptTo_Video Page</option>
+                <option value="test_ArticleTo_Video.py">ArticleTo_Video Page</option>
+                <option value="test_visualTo_Video.py">visualTo_Video Page</option>
+                <option value="test_edit_Video.py">edit_Video Page</option>
+                <option value="test_MyProject_Page.py">MyProject Page</option>
+                <option value="test_MyBranding_Page.py">MyBranding Page</option>
+                <option value="test_Storyboard_Page.py">Storyboard Page</option>
+                <option value="test_Subscription.py">Subscription Page</option>
+                <option value="test_Team_Page.py">Team Page</option>
+
+            <!-- Add more options based on your available test files -->
+            </select>
+        </div>
+        <input type="submit" value="Run Tests">
+    </form>
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form>
+        <div id="log-container">
+            <pre id="log">
+                {% for entry in log_data %}
+                    {{ entry|safe }}
+                {% endfor %}
+            </pre>
+        </div>
+        <script>
+            if (performance.navigation.type === 1) {
+                // Page is loaded for the first time or refreshed, redirect to /pictory_config
+                window.location.href = '/pictory_config';
+            }
+            const eventSource = new EventSource('/run_tests');
+            const logElement = document.getElementById('log');
+
+            eventSource.onmessage = (event) => {
+                const logLine = event.data.trim();
+                const logEntry = document.createElement('div');
+                logEntry.className = getLogLevel(logLine);
+                logEntry.textContent = logLine;
+                logElement.appendChild(logEntry);
+                logElement.scrollTop = logElement.scrollHeight;
+            };
+
+            document.getElementById('stop-tests').addEventListener('click', () => {
+            eventSource.close();  // Close the EventSource connection to stop receiving updates
+            });
+            eventSource.onerror = (error) => {
+                console.error('EventSource failed:', error);
+                eventSource.close();
+            };
+
+            function getLogLevel(logLine) {
+                if (logLine.includes('INFO')) {
+                    return 'info';
+                } else if (logLine.includes('WARNING')) {
+                    return 'warning';
+                } else if (logLine.includes('ERROR')) {
+                    return 'error';
+                }
+                return '';
+            }
+        </script>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                var flashes = document.querySelector(".flashes");
+                if (flashes) {
+                    flashes.style.display = "none";
+                }
+            }, 2000);  // 2000 milliseconds (2 seconds)
+        });
+    </script>
+</body>
+</html>

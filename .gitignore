@@ -1,0 +1,9 @@
+*.pyc
+__pycache__/
+.idea/
+screenshots/*
+report-allure/
+reports/*
+data/
+resources/*
+tests/conftest.py

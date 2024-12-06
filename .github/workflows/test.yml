@@ -1,0 +1,126 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          # install pip for pytest
+          python -m pip install pip==23.2.1
+          pip install flake8 pytest
+
+          pip install allure-pytest
+          if [ -e "requirements.txt" ]; then
+              pip install -r requirements.txt
+          fi
+
+      - name: Install Allure Report
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.14.0/allure-2.14.0.zip
+          unzip allure-2.14.0.zip
+          sudo cp -r allure-2.14.0 /opt
+        working-directory: ${{ github.workspace }}
+
+# set path for ALLURE till duration of GitHub Actions workflow run
+
+      - name: Set PATH for Allure
+        run: echo "/opt/allure-2.14.0/bin" >> $GITHUB_PATH
+
+# Run test cases
+
+      - name: Test with pytest
+        run: |
+          allure --version
+          pytest -v -s  ./tests/pictorytests -m "sanity" --alluredir=./reports/allure-results --env dev
+
+        continue-on-error: true
+
+# Generate Allure report
+
+      - name: Generate Allure Report for test cases
+        run: |
+          
+          allure generate ./reports/allure-results -o ./reports/report-allure
+
+        continue-on-error: true
+
+
+# Deploy report to GitHub Pages
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: ./reports/report-allure
+
+# change context to gh-pages
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages # Checkout the gh-pages branch
+
+
+# configure AWS credentials
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+# upload on s3 bucket
+
+      - name: Upload Report to S3
+        run: aws s3 cp ./ s3://pict-automation-test-report --recursive
+
+# invalidating cloudfront distribution
+
+      - name: Invalidate CloudFront Distribution
+        run: |
+          aws cloudfront create-invalidation --distribution-id E37ZGM0WH3PWGW --paths "/*"
+
+# decoding and saving private key
+
+      - name: Decode Private Key for CloudFront
+        run: |
+          echo "${{ secrets.CLOUDFRONT_PRIVATE_KEY_BASE64 }}" | base64 --decode > private_key.pem
+          chmod 400 private_key.pem
+
+#  Generate signed url
+
+ 
+      - name: Generate Signed URL
+        run: |
+            # Set the expiration time to 1 week from now
+            EXPIRATION_TIME=$(date -u -d "+1 week" +"%Y-%m-%dT%H:%M:%SZ")
+            URL=$(aws cloudfront sign --url "${{ env.CLOUDFRONT_URL }}/index.html" --key-pair-id ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }} --private-key file://$(pwd)/private_key.pem --date-less-than "$EXPIRATION_TIME")
+            echo "SIGNED_URL=$URL" >> $GITHUB_ENV
+            echo "Generated URL: $URL"
+        
+# Send Email with generated url
+
+      - name: Send Email with Signed URL
+        run: |
+          aws ses send-email \
+          --from "support@pictory.ai" \
+          --destination "ToAddresses=ankit@pictory.ai,anubhav@pictory.ai, sravanthi@pictory.ai, shivam@pictory.ai, nishi@pictory.ai,vikash@pictory.ai,  nikhil@pictory.ai" \
+          --message "Subject={Data=Pictory automation Test Report,Charset=utf8},Body={Text={Data=This is the Pictory automation test report. Please find the report attached.\n\nReport available at https://d3kz0j4llo31m6.cloudfront.net${{ env.SIGNED_URL }},Charset=utf8}}"

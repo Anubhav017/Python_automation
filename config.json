@@ -1,0 +1,24 @@
+{
+  "environments": {
+    "test": {
+      "browser": "chrome",
+      "headless_mode": true,
+      "base_url": "https://test.defyn3aqam6ot.amplifyapp.com/login",
+      "test_url": "https://test.defyn3aqam6ot.amplifyapp.com",
+      "timeout": 30
+    },
+    "staging": {
+      "browser": "chrome",
+      "headless_mode": true,
+      "base_url": "https://master-v1-staging.d27l04s7h73icm.amplifyapp.com/login",
+      "timeout": 40
+    },
+      "dev": {
+      "browser": "chrome",
+      "headless_mode": false,
+      "base_url": "https://dev-v2-app.pictorycontent.com/login",
+      "dev_url": "https://dev-v2-app.pictorycontent.com",
+      "timeout": 20
+    }
+  }
+}

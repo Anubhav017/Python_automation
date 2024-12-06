@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "user_id": 1,
+      "username": "Anubhav_pictory@1",
+      "password": "Anubhav@1234"
+    },
+    {
+      "user_id": 2,
+      "username": "Anubhav_pictory@2",
+      "password": "Anubhav@1234"
+    },
+    {
+      "user_id": 3,
+      "username": "Anubhav_pictory@3",
+      "password": "Anubhav@1234"
+    },
+    {
+      "user_id": 4,
+      "username": "Anubhav_pictory@4",
+      "password": "Anubhav@1234"
+    }
+  ]
+}

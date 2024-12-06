@@ -1,0 +1,7 @@
+2023-07-24 20:35:27,743: INFO: ====== WebDriver manager ======
+2023-07-24 20:35:28,579: INFO: There is no [win64] chromedriver "latest" for browser google-chrome "115.0.5790.102" in cache
+2023-07-24 20:35:28,579: INFO: Get LATEST chromedriver version for google-chrome
+2023-07-24 20:35:29,636: INFO: Modern chrome version https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/115.0.5790.102/win32/chromedriver-win32.zip
+2023-07-24 20:35:29,636: INFO: About to download new driver from https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/115.0.5790.102/win32/chromedriver-win32.zip
+2023-07-24 20:35:30,173: INFO: Driver downloading response is 200
+2023-07-24 20:35:32,541: INFO: Driver has been saved in cache [C:\Users\HP\.wdm\drivers\chromedriver\win32\115.0.5790.102]
