@@ -1,0 +1,39 @@
+### Homepage: GET /
+HTTP/1.1 200 OK  (281 ms, 2847 bytes decoded)
+date: Thu, 01 Oct 2026 12:52:27 GMT
+content-type: text/html; charset=utf-8
+content-length: 2847
+connection: keep-alive
+set-cookie: AWSALB=kJpV/UQq8C4txFLh6L1k0D6gYXCI5jXcQcDkAHEyk/usgUe6vFPkBQN7uv1iTqeOJKquo6ssKD3ZOqPx1/yceXpNRKxl3AVet/FMES+lA34iX7QsPwC44O9oET0s; Expires=Thu, 08 Oct 2026 12:52:27 GMT; Path=/, AWSALBCORS=kJpV/UQq8C4txFLh6L1k0D6gYXCI5jXcQcDkAHEyk/usgUe6vFPkBQN7uv1iTqeOJKquo6ssKD3ZOqPx1/yceXpNRKxl3AVet/FMES+lA34iX7QsPwC44O9oET0s; Expires=Thu, 08 Oct 2026 12:52:27 GMT; Path=/; SameSite=None; Secure
+accept-ranges: bytes
+vary: Origin
+
+### Homepage, gzip accepted: GET /
+HTTP/1.1 200 OK  (264 ms, 2847 bytes decoded)
+date: Thu, 01 Oct 2026 12:52:27 GMT
+content-type: text/html; charset=utf-8
+content-length: 2847
+connection: keep-alive
+set-cookie: AWSALB=b9QFqxbI9KDcfcnN3gR9NApWsCRwCOFGAW+RkvJzgvYdSQV2swNJkNakdaum3BvRGbOmYyKGIkCMrR/4JsbEM2FznREc1EjDh/m8Ahs9p5GjDH9EezqPmt/XTKhV; Expires=Thu, 08 Oct 2026 12:52:27 GMT; Path=/, AWSALBCORS=b9QFqxbI9KDcfcnN3gR9NApWsCRwCOFGAW+RkvJzgvYdSQV2swNJkNakdaum3BvRGbOmYyKGIkCMrR/4JsbEM2FznREc1EjDh/m8Ahs9p5GjDH9EezqPmt/XTKhV; Expires=Thu, 08 Oct 2026 12:52:27 GMT; Path=/; SameSite=None; Secure
+accept-ranges: bytes
+vary: Origin
+
+### Static asset (CSS): GET /_app/immutable/assets/0.kLK4yNcK.css
+HTTP/1.1 200 OK  (527 ms, 16151 bytes decoded)
+date: Thu, 01 Oct 2026 12:52:27 GMT
+content-type: text/css; charset=utf-8
+content-length: 16151
+connection: keep-alive
+set-cookie: AWSALB=IdWRuXDLM1lmhkIPCm55KPZEfcRhvEGBphyKg2qWL8SWctyX3wwVF+V8bv4617HOYueBNi7UCxaD9ESnoRXkbnslKx4O7YfOfy1o0/+MbgJAcSj+d9tWMR5uu5MP; Expires=Thu, 08 Oct 2026 12:52:27 GMT; Path=/, AWSALBCORS=IdWRuXDLM1lmhkIPCm55KPZEfcRhvEGBphyKg2qWL8SWctyX3wwVF+V8bv4617HOYueBNi7UCxaD9ESnoRXkbnslKx4O7YfOfy1o0/+MbgJAcSj+d9tWMR5uu5MP; Expires=Thu, 08 Oct 2026 12:52:27 GMT; Path=/; SameSite=None; Secure
+accept-ranges: bytes
+vary: Origin
+
+### Missing page: GET /this-page-does-not-exist
+HTTP/1.1 404 Not Found  (331 ms, 19 bytes decoded)
+date: Thu, 01 Oct 2026 12:52:28 GMT
+content-type: text/plain; charset=utf-8
+content-length: 19
+connection: keep-alive
+set-cookie: AWSALB=H0arqNKGrHVgmDuRFtaiQ87IaPIJJnXJid9wWmg1gL31l69zMF8PvlgcEkIVwS0KrvxuQIzUk+plVNLJ9ulT7ZdhNGMAq2IlaIPNIJ4HZTGg6eKCg3n4S3Cwl5zo; Expires=Thu, 08 Oct 2026 12:52:28 GMT; Path=/, AWSALBCORS=H0arqNKGrHVgmDuRFtaiQ87IaPIJJnXJid9wWmg1gL31l69zMF8PvlgcEkIVwS0KrvxuQIzUk+plVNLJ9ulT7ZdhNGMAq2IlaIPNIJ4HZTGg6eKCg3n4S3Cwl5zo; Expires=Thu, 08 Oct 2026 12:52:28 GMT; Path=/; SameSite=None; Secure
+vary: Origin
+x-content-type-options: nosniff

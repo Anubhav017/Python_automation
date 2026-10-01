@@ -53,3 +53,21 @@ api:
       - part2-api/reports/
     reports:
       junit: part2-api/reports/junit.xml
+
+load:
+  stage: test
+  timeout: 10m
+  # sends 1000 requests to a public site, so it only runs when started by hand
+  rules:
+    - when: manual
+  allow_failure: true
+  before_script:
+    - cd part3-load
+    - pip install -r requirements.txt
+  script:
+    - python run_load_test.py
+  artifacts:
+    when: always
+    expire_in: 2 weeks
+    paths:
+      - part3-load/reports/
