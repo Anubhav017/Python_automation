@@ -12,22 +12,24 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 default:
-  # bookworm, playwright 1.48 --with-deps does not support debian trixie
+  # pinned so the base os does not change under us; ui-e2e overrides it with the playwright image
   image: python:3.12-bookworm
   interruptible: true
-  cache:
-    key: pip
-    paths: [.cache/pip]
 
 ui-e2e:
   stage: test
   timeout: 20m
+  # browsers and system deps are baked in, keep the tag in step with playwright in requirements.txt
+  image: mcr.microsoft.com/playwright/python:v1.48.0-jammy
   # results are in the html report, traces and junit tab; don't block the pipeline on them
   allow_failure: true
+  cache:
+    key:
+      files: [part1-e2e/requirements.txt]
+    paths: [.cache/pip]
   before_script:
     - cd part1-e2e
     - pip install -r requirements.txt
-    - playwright install chromium --with-deps
   script:
     # the public demo store is shared and sometimes slow, retry before calling it a failure
     - pytest --reruns 2 --reruns-delay 3 --junitxml=reports/junit.xml
@@ -43,7 +45,10 @@ ui-e2e:
 api:
   stage: test
   timeout: 10m
-  allow_failure: true
+  cache:
+    key:
+      files: [part2-api/requirements.txt]
+    paths: [.cache/pip]
   # OSM_DEV_TOKEN comes from Settings > CI/CD > Variables; without it the write tests are skipped
   before_script:
     - cd part2-api
@@ -65,6 +70,10 @@ load:
   rules:
     - when: manual
   allow_failure: true
+  cache:
+    key:
+      files: [part3-load/requirements.txt]
+    paths: [.cache/pip]
   before_script:
     - cd part3-load
     - pip install -r requirements.txt
