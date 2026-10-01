@@ -1,0 +1,55 @@
+stages: [test]
+
+# one pipeline per change: MR pipelines for merge requests, branch pipelines otherwise
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+default:
+  image: python:3.12
+  interruptible: true
+  cache:
+    key: pip
+    paths: [.cache/pip]
+
+ui-e2e:
+  stage: test
+  timeout: 20m
+  before_script:
+    - cd part1-e2e
+    - pip install -r requirements.txt
+    - playwright install chromium --with-deps
+  script:
+    # the public demo store is shared and sometimes slow, retry before calling it a failure
+    - pytest --reruns 2 --reruns-delay 3 --junitxml=reports/junit.xml
+  artifacts:
+    when: always
+    expire_in: 2 weeks
+    paths:
+      - part1-e2e/reports/
+      - part1-e2e/test-results/
+    reports:
+      junit: part1-e2e/reports/junit.xml
+
+api:
+  stage: test
+  timeout: 10m
+  # OSM_DEV_TOKEN comes from Settings > CI/CD > Variables; without it the write tests are skipped
+  before_script:
+    - cd part2-api
+    - pip install -r requirements.txt
+  script:
+    - pytest --junitxml=reports/junit.xml
+  artifacts:
+    when: always
+    expire_in: 2 weeks
+    paths:
+      - part2-api/reports/
+    reports:
+      junit: part2-api/reports/junit.xml
