@@ -38,3 +38,11 @@ def test_search_by_price_low_to_high(page: Page) -> None:
     prices = search.price_values()
     assert len(prices) > 1, "need at least two products to check the order"
     assert prices == sorted(prices), f"prices are not sorted low to high: {prices}"
+
+
+def test_search_with_no_results(page: Page) -> None:
+    search = SearchPage(page).open()
+    search.search_for("xyzqwe123")
+
+    expect(search.content).to_contain_text("There is no product that matches the search criteria.")
+    expect(search.product_names).to_have_count(0)

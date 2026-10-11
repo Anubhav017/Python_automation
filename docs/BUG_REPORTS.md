@@ -1,45 +1,15 @@
 # Bug Reports
 
-## BUG-001 – Product page pre-fills quantity "2", so the cart total is doubled
+## Part 1 – UI (Automation Test Store)
 
-| Field | Value |
-|---|---|
-| **Area** | Product page → Shopping cart |
-| **Severity** | Medium (the customer can be charged for more items than intended) |
-| **Priority** | Medium |
-| **Environment** | https://automationteststore.com, Chrome (Playwright Chromium), Windows 11, 2026-10-01 |
-| **Status** | Open, needs confirmation from the product owner |
-
-**Summary**
-The product "Benefit Bella Bamba" opens with **2** already in the quantity box. A shopper who just clicks "Add to Cart" gets 2 items: the unit price is $28.00 and the cart total is $56.00.
-
-**Steps to reproduce**
-1. Open https://automationteststore.com/index.php?rt=product/product&product_id=52
-2. Look at the quantity box. Do not change it.
-3. Click **Add to Cart**.
-
-**Expected result**
-The quantity starts at 1. If the product has a minimum order of 2, the page clearly says so next to the quantity box.
-
-**Actual result**
-The quantity box shows 2. The cart has quantity 2 and a total of $56.00 for a $28.00 product.
-
-**Evidence**
-Seen during an automated run: the product page quantity was `2`, and the cart row showed `$28.00 … $56.00`.
-
-**Note for developers**
-Check whether a minimum quantity is configured for product 52. If it is intended, show a "Minimum quantity: 2" hint. If it is not, reset the default to 1.
-
----
-
-## BUG-002 – Misspelled CSS class `prdocutname` on product listings
+## BUG-UI-001 – Misspelled CSS class `prdocutname` on product listings
 
 | Field | Value |
 |---|---|
 | **Area** | Search results and category pages (front-end markup) |
 | **Severity** | Low (shoppers do not see it) |
 | **Priority** | Low |
-| **Environment** | https://automationteststore.com, all browsers |
+| **Environment** | https://automationteststore.com, all browsers, last reproduced 2026-10-11 |
 | **Status** | Open |
 
 **Summary**
@@ -53,10 +23,10 @@ The product name links on listing pages use the class `prdocutname` instead of `
 The class is spelled `productname`, which matches the product page.
 
 **Actual result**
-The class is `prdocutname`.
+The class is `prdocutname`. On the "shampoo" results page, 4 elements use `prdocutname` and none use `productname`.
 
 **Impact**
-Styling and test selectors that use the correct spelling silently match nothing. Our own first test draft with `.productname` found zero products for this reason. Fixing the class name will break any selector that relies on the typo, so the change must be coordinated with the test team.
+Styling and test selectors that use the correct spelling silently match nothing. Our own first test draft with `.productname` found zero products for this reason. Fixing the class name will break any selector that relies on the typo (including `part1-e2e/pages/search_page.py`), so the change must be coordinated with the test team.
 
 ---
 

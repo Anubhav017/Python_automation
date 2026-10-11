@@ -111,6 +111,26 @@ def test_change_note_without_login_returns_401(notes_client: NotesClient, action
 
 @pytest.mark.negative
 @pytest.mark.parametrize(
+    "action",
+    [
+        lambda c: c.comment(1, "comment with a bad token"),
+        lambda c: c.close_note(1),
+    ],
+    ids=["comment", "close"],
+)
+def test_change_note_with_invalid_token_returns_401(action) -> None:
+    # a made-up token must be rejected like no token at all, not treated as a logged-in user
+    client = NotesClient(token="invalid-token-for-test")
+    try:
+        response = action(client)
+    finally:
+        client.close()
+    assert response.status_code == 401, response.text
+    assert "Couldn't authenticate you" in response.text
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
     ("lat", "lon", "text", "message"),
     [
         (999, config.BANGALORE_LON, "bad latitude", "The note is outside this world"),

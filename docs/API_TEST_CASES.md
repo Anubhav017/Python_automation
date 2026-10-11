@@ -47,6 +47,7 @@ Nominatim only reads data. To test **creating, changing and deleting** data, the
 | NOTE-09 | `test_get_unknown_note_returns_404` | `GET /notes/999999999.json` | **404 Not Found** |
 | NOTE-10 | `test_change_note_without_login_returns_401[comment, close, delete]` | comment, close or delete with no token | **401 Unauthorized**, "Couldn't authenticate you" |
 | NOTE-11 | `test_create_note_with_invalid_input_returns_400[…]` | `lat=999` / `lat=abc` / no `text` | **400**, "The note is outside this world" / "lat was not a number" / "No text was given" |
+| NOTE-12 | `test_change_note_with_invalid_token_returns_401[comment, close]` | comment or close with a made-up token | **401 Unauthorized**, "Couldn't authenticate you" (a bad token is not treated as a login) |
 
 **Status codes covered across Part 2:** 200, 400, 401, 403, 404, 409.
 
