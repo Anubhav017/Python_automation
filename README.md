@@ -1,4 +1,4 @@
-# Toptal E2E Framework - Anubhav Kumar
+# Playwright Framework
 
 ## Architecture
 Python + Playwright (POM) + httpx + Pydantic + Locust + GitLab CI
