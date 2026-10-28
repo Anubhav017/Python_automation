@@ -63,7 +63,7 @@ Nominatim only reads data. To test **creating, changing and deleting** data, the
      -d redirect_uri=urn:ietf:wg:oauth:2.0:oob \
      -d client_id=CLIENT_ID -d client_secret=CLIENT_SECRET
    ```
-   The `access_token` in the reply is the value. Put it in `.env` locally, and in GitLab under **Settings → CI/CD → Variables** as `OSM_DEV_TOKEN` (Masked, not Protected).
+   The `access_token` in the reply is the value. Put it in `.env` locally, and add it in GitHub under **Settings → Secrets and variables → Actions** as the `OSM_DEV_TOKEN` repository secret.
 
 ## Run
 ```bash

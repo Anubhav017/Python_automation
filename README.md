@@ -1,7 +1,7 @@
 # Playwright Framework
 
 ## Architecture
-Python + Playwright (POM) + httpx + Pydantic + Locust + GitLab CI
+Python + Playwright (POM) + httpx + Pydantic + Locust + GitHub Actions
 
 ## Setup
 ```bash
@@ -64,7 +64,7 @@ open part1-e2e/reports/report.html
 
 `reports/` is git-ignored, so run a part first to create its report. Saved copies from earlier runs are in [docs/evidence/](docs/evidence/).
 
-In GitLab CI, open a pipeline, then a job, then **Browse** under *Job artifacts* to see the same files. Pass/fail results for Parts 1 and 2 are also on the pipeline's **Tests** tab.
+In GitHub Actions, open a workflow run and download the UI, API, or load-test artifacts to see the generated reports.
 
 ## Part 1 - UI E2E (https://automationteststore.com)
 
@@ -136,7 +136,7 @@ Result: 1000/1000 visits passed, and response time did not change (probe median 
 - Part 3 load test write-up and results: [docs/LOAD_TEST.md](docs/LOAD_TEST.md)
 
 ## CI
-[.gitlab-ci.yml](.gitlab-ci.yml) runs Parts 1 and 2 as separate GitLab jobs on every push and merge request. The Part 3 `load` job is manual (start it from the pipeline page), because it sends 1000 requests to a public site. Each job keeps its HTML report as a pipeline artifact and publishes JUnit results to the pipeline's **Tests** tab; Part 1 also keeps traces, screenshots and videos of failed tests. Set `LOGIN_NAME`, `LOGIN_PASSWORD` and `LOGIN_FIRST_NAME` (masked) under **Settings → CI/CD → Variables** to run the login tests, and `OSM_DEV_TOKEN` to run the Notes write tests. The UI job retries failed tests twice, because the public demo store is shared and sometimes slow.
+[GitHub Actions workflow](.github/workflows/ci.yml) runs Parts 1 and 2 on every push and pull request. Part 3 is opt-in: start the workflow manually and set `run_load` to true, because it sends 1000 requests to a public site. Reports, JUnit XML, and UI failure traces are uploaded as workflow artifacts. Add `LOGIN_NAME`, `LOGIN_PASSWORD`, `LOGIN_FIRST_NAME`, and `OSM_DEV_TOKEN` as repository Actions secrets to enable the corresponding tests. The UI job retries failed tests twice, because the public demo store is shared and sometimes slow.
 
 ## Design Decisions
 - **Playwright over Selenium:** Auto-wait, faster, trace on failure

@@ -20,6 +20,6 @@ LOAD_GRACE_SECONDS = int(os.getenv("LOAD_GRACE_SECONDS", "5"))
 PROBE_SAMPLES = int(os.getenv("PROBE_SAMPLES", "10"))
 PROBE_INTERVAL = float(os.getenv("PROBE_INTERVAL", "0.5"))
 REQUEST_TIMEOUT = float(os.getenv("REQUEST_TIMEOUT", "30"))
-USER_AGENT = os.getenv("LOAD_USER_AGENT", "Toptal-Test-Anubhav-Load/1.0")
+USER_AGENT = os.getenv("LOAD_USER_AGENT", "Python-Automation-Load/1.0")
 
 REPORTS_DIR = Path(__file__).resolve().parent / "reports"
